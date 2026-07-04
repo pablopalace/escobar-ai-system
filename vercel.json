@@ -1,7 +1,1 @@
-{
-  "buildCommand": "cd backend && npm install",
-  "framework": "express",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/server.js" }
-  ]
-}
+{\n  "version\": 2,\n  \"builds\": [\n    {\n      \"src\": \"backend/server.js\",\n      \"use\": \"@vercel/node\",\n      \"config\": {\n        \"includeFiles\": \"backend/**\"\n      }\n    },\n    {\n      \"src\": \"frontend/**\",\n      \"use\": \"@vercel/static\"\n    }\n  ],\n  \"routes\": [\n    {\n      \"src\": \"/api/(.*)\",\n      \"dest\": \"backend/server.js\"\n    },\n    {\n      \"src\": \"/(.*)\",\n      \"dest\": \"frontend/$1\"\n    }\n  ]\n}
