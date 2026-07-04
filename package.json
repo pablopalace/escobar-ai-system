@@ -1,0 +1,17 @@
+{
+  "name": "escobar-ai-system",
+  "version": "1.0.0",
+  "description": "Escobar AI System - Digital Money & AI Trading Infrastructure",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "install-all": "npm install && cd backend && npm install"
+  },
+  "keywords": [
+    "lead-generation",
+    "ai-trading",
+    "automation"
+  ],
+  "author": "pablopalace",
+  "license": "Proprietary"
+}
