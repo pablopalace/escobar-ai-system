@@ -1,234 +1,214 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escobar Digital AI System</title>
+# Escobar AI System
 
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#070707;
-  color:#fff;
+A production-ready digital business infrastructure platform combining lead generation, AI trading logic, and automation funnels.
+
+## Features
+
+- 💰 **Digital Money System** - Lead generation engine, service monetization, automation flows
+- 🤖 **AI Trading Brand System** - Market logic, risk management, execution discipline
+- 📧 **Email Integration** - Mailchimp lead capture and automation
+- 📱 **WhatsApp Business API** - Direct WhatsApp lead routing
+- 🗄️ **PostgreSQL Database** - Persistent lead storage and analytics
+- 🐳 **Docker Support** - Easy self-hosted deployment
+
+## Tech Stack
+
+- **Backend**: Node.js (Express.js)
+- **Database**: PostgreSQL
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Integrations**: WhatsApp Business API, Mailchimp
+- **Deployment**: Docker, Docker Compose
+
+## Quick Start with Docker
+
+```bash
+git clone https://github.com/pablopalace/escobar-ai-system.git
+cd escobar-ai-system
+cp backend/.env.example backend/.env
+# Edit .env with your credentials
+docker-compose up -d
+```
+
+Access the system:
+- **Frontend**: http://localhost:3000
+- **API**: http://localhost:3000/api
+- **Health Check**: http://localhost:3000/api/health
+
+## Manual Setup
+
+1. **Install dependencies**
+   ```bash
+   cd backend
+   npm install
+   ```
+
+2. **Set up environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database and API credentials
+   ```
+
+3. **Start server**
+   ```bash
+   npm start
+   ```
+
+## API Documentation
+
+### POST /api/leads
+
+Submit a new lead.
+
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+1234567890",
+  "source": "landing_page"
 }
+```
 
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  padding:20px 50px;
-  border-bottom:1px solid #222;
-  background:#000;
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Lead created successfully",
+  "leadId": "550e8400-e29b-41d4-a716-446655440000",
+  "data": { ... }
 }
-.logo{
-  color:silver;
-  font-weight:bold;
-  letter-spacing:2px;
-}
-nav a{
-  color:#aaa;
-  margin-left:20px;
-  text-decoration:none;
-}
-nav a:hover{color:#fff}
+```
 
-/* HERO */
-.hero{
-  text-align:center;
-  padding:110px 20px;
-  background:radial-gradient(circle,#1a1a1a,#000);
-}
-.hero h1{
-  font-size:58px;
-  color:silver;
-}
-.hero p{
-  max-width:650px;
-  margin:auto;
-  color:#bbb;
-}
-.btn{
-  margin-top:20px;
-  padding:14px 30px;
-  background:silver;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-}
-.btn:hover{background:#fff}
+### GET /api/leads
 
-/* SECTIONS */
-.section{
-  padding:80px 50px;
-  text-align:center;
-}
-.section h2{color:silver}
+Retrieve all leads with filtering.
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-.card{
-  background:#111;
-  border:1px solid #222;
-  padding:20px;
-}
+**Query Parameters:**
+- `status` - Filter by status (new, contacted, converted)
+- `source` - Filter by source (landing_page, referral, etc.)
+- `limit` - Results per page (default: 50)
+- `offset` - Pagination offset (default: 0)
 
-/* FORM */
-.form-box{
-  background:#111;
-  padding:40px;
-  max-width:500px;
-  margin:auto;
-  border:1px solid #222;
-}
-input{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  background:#000;
-  border:1px solid #333;
-  color:#fff;
-}
-button{
-  width:100%;
-  padding:12px;
-  background:silver;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:hover{background:#fff}
+### GET /api/leads/:id
 
-/* CTA FLOAT */
-.float-cta{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:silver;
-  color:black;
-  padding:12px 18px;
-  font-weight:bold;
-  text-decoration:none;
-}
-</style>
-</head>
+Retrieve a specific lead.
 
-<body>
+### PUT /api/leads/:id
 
-<header>
-  <div class="logo">ESCOBAR AI SYSTEM</div>
-  <nav>
-    <a href="#money">Money System</a>
-    <a href="#ai">AI Trading</a>
-    <a href="#access">Access</a>
-  </nav>
-</header>
+Update a lead.
 
-<!-- HERO -->
-<section class="hero">
-  <h1>Build Money Systems. Not Jobs.</h1>
-  <p>
-    Escobar AI System combines digital business infrastructure + AI trading logic + automation funnels
-    to create income systems that run without emotional decision-making.
-  </p>
-  <button class="btn">Enter System</button>
-</section>
+### DELETE /api/leads/:id
 
-<!-- MONEY SYSTEM -->
-<section id="money" class="section">
-  <h2>💰 Digital Money System</h2>
-  <div class="grid">
+Delete a lead.
 
-    <div class="card">
-      <h3>Lead Generation Engine</h3>
-      <p>Turn traffic into emails, WhatsApp leads, and clients automatically.</p>
-    </div>
+## Environment Variables
 
-    <div class="card">
-      <h3>Service Monetization</h3>
-      <p>Sell digital skills (websites, funnels, branding) as packaged systems.</p>
-    </div>
+See `backend/.env.example` for all required variables:
 
-    <div class="card">
-      <h3>Automation Flow</h3>
-      <p>Reduce manual work. Every click pushes toward conversion.</p>
-    </div>
+- `DATABASE_URL` - PostgreSQL connection string
+- `MAILCHIMP_API_KEY` - Mailchimp API key
+- `MAILCHIMP_LIST_ID` - Mailchimp audience/list ID
+- `WHATSAPP_BUSINESS_PHONE_ID` - WhatsApp Business phone ID
+- `WHATSAPP_BUSINESS_TOKEN` - WhatsApp Business API token
+- `WHATSAPP_VERIFY_TOKEN` - Webhook verification token
+- `NODE_ENV` - Environment (development/production)
+- `PORT` - Server port (default: 3000)
 
-  </div>
-</section>
+## Integration Guides
 
-<!-- AI TRADING BRAND -->
-<section id="ai" class="section">
-  <h2>🤖 AI Trading Brand System</h2>
-  <div class="grid">
+### Mailchimp Setup
 
-    <div class="card">
-      <h3>AI Market Logic</h3>
-      <p>Structure-based trading mindset using probability, not emotion.</p>
-    </div>
+1. Get API key from [Mailchimp account settings](https://mailchimp.com/account/api/)
+2. Create an audience/list and get the List ID
+3. Add credentials to `.env`:
+   ```
+   MAILCHIMP_API_KEY=your_api_key
+   MAILCHIMP_LIST_ID=your_list_id
+   ```
 
-    <div class="card">
-      <h3>Risk Engine</h3>
-      <p>Capital protection rules designed for long-term survival.</p>
-    </div>
+### WhatsApp Business API Setup
 
-    <div class="card">
-      <h3>Execution Discipline</h3>
-      <p>Remove impulsive trades. Follow system rules only.</p>
-    </div>
+1. Register for [WhatsApp Business API](https://developers.facebook.com/docs/whatsapp)
+2. Get phone number ID and access token
+3. Add to `.env`:
+   ```
+   WHATSAPP_BUSINESS_PHONE_ID=your_phone_id
+   WHATSAPP_BUSINESS_TOKEN=your_token
+   WHATSAPP_VERIFY_TOKEN=your_verify_token
+   ```
 
-  </div>
-</section>
+## Database Schema
 
-<!-- SYSTEM LOGIC -->
-<section class="section">
-  <h2>⚙️ How The Engine Works</h2>
-  <p style="max-width:700px;margin:auto;color:#aaa;">
-    Attention → Capture → Trust → Offer → Conversion → Reinvestment → Scale  
-    <br><br>
-    This is not content. This is infrastructure.
-  </p>
-</section>
+### leads table
 
-<!-- LEAD CAPTURE -->
-<section id="access" class="section">
-  <h2>🚀 Get Access to the System</h2>
+```sql
+CREATE TABLE leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  phone VARCHAR(20),
+  source VARCHAR(100) DEFAULT 'landing_page',
+  status VARCHAR(50) DEFAULT 'new',
+  mailchimp_id VARCHAR(255),
+  whatsapp_id VARCHAR(255),
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
-  <div class="form-box">
-    <form onsubmit="sendLead(event)">
-      <input type="text" id="name" placeholder="Name" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <button type="submit">Join System</button>
-    </form>
-  </div>
-</section>
+## Project Structure
 
-<!-- FLOAT CTA -->
-<a class="float-cta" href="https://wa.me/" target="_blank">
-  WhatsApp Me
-</a>
+```
+escobar-ai-system/
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── database.js
+│   │   ├── controllers/
+│   │   │   └── leadController.js
+│   │   ├── routes/
+│   │   │   ├── leads.js
+│   │   │   └── health.js
+│   │   ├── services/
+│   │   │   ├── mailchimp.js
+│   │   │   └── whatsapp.js
+│   │   ├── middleware/
+│   │   │   ├── validation.js
+│   │   │   └── errorHandler.js
+│   │   └── app.js
+│   ├── .env.example
+│   ├── package.json
+│   ├── Dockerfile
+│   └── server.js
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   │   └── styles.css
+│   └── js/
+│       └── main.js
+├── docker-compose.yml
+├── .gitignore
+└── README.md
+```
 
-<footer style="text-align:center;padding:20px;color:#666;">
-  © 2026 Escobar AI System — Built for Operators Only
-</footer>
+## Deployment
 
-<script>
-function sendLead(e){
-  e.preventDefault();
+### Docker Compose (Self-Hosted)
 
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
+```bash
+docker-compose up -d
+```
 
-  let message = `New Lead:%0AName: ${name}%0AEmail: ${email}`;
+Starts:
+- PostgreSQL database (port 5432)
+- Express API (port 3000)
+- Frontend (port 3000)
 
-  // Redirect to WhatsApp (replace number)
-  window.open("https://wa.me/?text=" + message, "_blank");
-}
-</script>
+## License
 
-</body>
-</html>
+Proprietary - Built for Operators Only
+
+## Support
+
+For issues, create a GitHub issue or contact support.

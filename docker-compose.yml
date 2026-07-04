@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: escobar_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: escobar_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - escobar_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: escobar_backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: escobar_ai
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      MAILCHIMP_API_KEY: ${MAILCHIMP_API_KEY}
+      MAILCHIMP_LIST_ID: ${MAILCHIMP_LIST_ID}
+      WHATSAPP_BUSINESS_PHONE_ID: ${WHATSAPP_BUSINESS_PHONE_ID}
+      WHATSAPP_BUSINESS_TOKEN: ${WHATSAPP_BUSINESS_TOKEN}
+      JWT_SECRET: ${JWT_SECRET:-your_secret_key_here_change_in_production}
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+    networks:
+      - escobar_network
+
+  frontend:
+    image: nginx:alpine
+    container_name: escobar_frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+    networks:
+      - escobar_network
+
+volumes:
+  postgres_data:
+
+networks:
+  escobar_network:
+    driver: bridge
