@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd backend && npm install",
+  "framework": "express",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/backend/server.js" }
+  ]
+}
